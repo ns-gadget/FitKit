@@ -107,6 +107,7 @@ class FitKitPlugin(private val registrar: Registrar) : MethodCallHandler {
      * https://github.com/android/fit-samples/issues/28#issuecomment-557865949
      */
     private fun revokePermissions(result: Result) {
+        Log.d(TAG, "revokePermissions")
         val fitnessOptions = FitnessOptions.builder()
                 .build()
 
@@ -150,6 +151,7 @@ class FitKitPlugin(private val registrar: Registrar) : MethodCallHandler {
     }
 
     private fun requestOAuthPermissions(fitnessOptions: FitnessOptions, onSuccess: () -> Unit, onError: () -> Unit) {
+        Log.d(TAG, "requestOAuthPermissions")
         if (hasOAuthPermission(fitnessOptions)) {
             onSuccess()
             return
@@ -158,7 +160,6 @@ class FitKitPlugin(private val registrar: Registrar) : MethodCallHandler {
         oAuthPermissionListeners.add(object : OAuthPermissionsListener {
             override fun onOAuthPermissionsResult(resultCode: Int) {
                 oAuthPermissionListeners.remove(this)
-
                 if (resultCode == Activity.RESULT_OK) {
                     onSuccess()
                 } else {
@@ -175,7 +176,10 @@ class FitKitPlugin(private val registrar: Registrar) : MethodCallHandler {
     }
 
     private fun hasOAuthPermission(fitnessOptions: FitnessOptions): Boolean {
-        return GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(registrar.context()), fitnessOptions)
+
+        val has = GoogleSignIn.hasPermissions(GoogleSignIn.getLastSignedInAccount(registrar.context()), fitnessOptions)
+        Log.d(TAG, "hasOAuthPermission: $has")
+        return has
     }
 
     private fun readSample(request: ReadRequest<Type.Sample>, result: Result) {
