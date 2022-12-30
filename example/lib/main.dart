@@ -131,7 +131,7 @@ class _MyAppState extends State<MyApp> {
                         padding: EdgeInsets.symmetric(vertical: 8),
                         child: Text(
                           '$item - ${results[item].length}',
-                          style: Theme.of(context).textTheme.title,
+                          style: Theme.of(context).textTheme.headline1,
                         ),
                       );
                     } else if (item is FitData) {
